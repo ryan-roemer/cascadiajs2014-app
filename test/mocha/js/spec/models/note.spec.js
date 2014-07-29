@@ -10,6 +10,13 @@ define(["app/models/note"], function (NoteModel) {
       model = null;
     });
 
-    it("should have default values");
+    it("should be a NoteModel", function () {
+      expect(model).to.be.an.instanceof(NoteModel);
+    });
+
+    it("should have default values", function () {
+      expect(model.get("title")).to.equal("");
+      expect(model.get("text")).to.contain("Add Note");
+    });
   });
 });
