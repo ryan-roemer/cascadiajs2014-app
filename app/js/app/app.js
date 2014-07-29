@@ -30,32 +30,36 @@ define([
   // --------------------------------------------------------------------------
   // Backbone.js Components.
   // --------------------------------------------------------------------------
-  var str = JSON.stringify;
+  // var str = JSON.stringify;
+  // var NoteModel = Backbone.Model.extend({
+  //   urlRoot: "/notes", // :id
+  //   defaults: { title: "", text: "*Add Note!*" }
+  // });
+
+  // var noteModel = new NoteModel({ id: 1 });
+  // noteModel.on("change", function () {
+  //   console.log("Updated: " + str(noteModel.toJSON()));
+  // });
+
+  // console.log("Defaults: " + str(noteModel.toJSON()));
+  // noteModel.fetch().done(function () {
+  //   console.log("Fetched: " + str(noteModel.toJSON()));
+  // });
+
   var NoteModel = Backbone.Model.extend({
-    urlRoot: "/notes", // :id
     defaults: { title: "", text: "*Add Note!*" }
   });
 
-  var noteModel = new NoteModel({ id: 1 });
-  noteModel.on("change", function () {
-    console.log("Updated: " + str(noteModel.toJSON()));
+  var NotesCollection = Backbone.Collection.extend({
+    model: NoteModel,
+    url: "/notes"
   });
 
-  console.log("Defaults: " + str(noteModel.toJSON()));
-  noteModel.fetch().done(function () {
-    console.log("Fetched: " + str(noteModel.toJSON()));
+  var notesCollection = new NotesCollection();
+  notesCollection.fetch().done(function () {
+    console.log("Fetched: " +
+                JSON.stringify(notesCollection.toJSON()));
   });
-
-  // var NotesCollection = Backbone.Collection.extend({
-  //   model: NoteModel,
-  //   url: "/notes"
-  // });
-
-  // var notesCollection = new NotesCollection();
-  // notesCollection.fetch().done(function () {
-  //   console.log("Fetched: " +
-  //               JSON.stringify(notesCollection.toJSON()));
-  // });
 
 
   // --------------------------------------------------------------------------
