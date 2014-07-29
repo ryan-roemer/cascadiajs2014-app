@@ -86,14 +86,33 @@ define([
   //   });
   // console.log(JSON.stringify(theOs, null, 2));
 
+  var NoteView = Backbone.View.extend({
+    template: noteTmpl,
+    el: "#note .content",
+    initialize: function () {
+     this.listenTo(this.model, "change", this.render);
+    },
+    render: function () {
+      this.$el.html(this.template(this.model.toJSON()));
+      return this;
+    }
+  });
+
   // --------------------------------------------------------------------------
   // Application Bootstrap
   // --------------------------------------------------------------------------
   $(function () {
+    // HTML
+    var $note = $("<div id='note'><h2>Note</h2><div class='content' /></div>");
+    var $notes = $(
+      "<div id='notes'><h2>Notes</h2><div class='content' /></div>");
 
-    // Templates
     $("body")
-      .append(noteTmpl(notesCollection.at(0).toJSON()))
-      .append(notesTmpl(notesCollection.toJSON()));
+      .append($note)
+      .append($notes);
+
+    // App.
+    var noteView = new NoteView({ model: notesCollection.at(0) });
+    noteView.render();
   });
 });
