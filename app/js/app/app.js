@@ -110,24 +110,45 @@ define([
     }
   });
 
+  var $note = $("<div id='note'><h2>Note</h2><div class='content' /></div>");
+  var $notes = $(
+    "<div id='notes'><h2>Notes</h2><div class='content' /></div>");
+
+  var Router = Backbone.Router.extend({
+    routes: {
+      "": "notes",
+      ":id": "note"
+    },
+    notes: function () {
+      $note.hide();
+      $notes.show();
+
+      var notesView = new NotesView({ collection: notesCollection });
+      notesView.render();
+    },
+    note: function (id) {
+      // Convert to number
+      id = parseInt(id, 10);
+
+      $note.show();
+      $notes.hide();
+
+      var noteView = new NoteView({ model: notesCollection.at(id) });
+      noteView.render();
+    }
+  });
+
   // --------------------------------------------------------------------------
   // Application Bootstrap
   // --------------------------------------------------------------------------
   $(function () {
     // HTML
-    var $note = $("<div id='note'><h2>Note</h2><div class='content' /></div>");
-    var $notes = $(
-      "<div id='notes'><h2>Notes</h2><div class='content' /></div>");
-
     $("body")
       .append($note)
       .append($notes);
 
     // App.
-    var noteView = new NoteView({ model: notesCollection.at(0) });
-    noteView.render();
-
-    var notesView = new NotesView({ collection: notesCollection });
-    notesView.render();
+    var router = new Router();
+    Backbone.history.start();
   });
 });
