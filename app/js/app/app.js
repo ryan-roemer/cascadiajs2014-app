@@ -12,6 +12,9 @@ define([
   "jquery",
   "backbone",
 
+  "app/models/note",
+  "app/collections/notes",
+
   // Import and compile a HBS template.
   // For real application, remove this import (and the real file) and replace
   // with imports for your Backbone components needed to bootstrap the full
@@ -25,6 +28,8 @@ define([
 ], function (
   $,
   Backbone,
+  NoteModel,
+  NotesCollection,
   noteTmpl,
   notesTmpl
 ) {
@@ -63,14 +68,6 @@ define([
   //   console.log("Fetched: " +
   //               JSON.stringify(notesCollection.toJSON()));
   // });
-
-  var NoteModel = Backbone.Model.extend({
-    defaults: { title: "", text: "*Add Note!*" }
-  });
-  var NotesCollection = Backbone.Collection.extend({
-    model: NoteModel,
-    localStorage: new Backbone.LocalStorage("bb-col-demo")
-  });
 
   var notesCollection = new NotesCollection();
   // CLEAR: notesCollection.localStorage._clear();
