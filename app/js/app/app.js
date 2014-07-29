@@ -19,7 +19,8 @@ define([
   "hbs!app/templates/hello",
 
   // Polyfill JSON for old browsers.
-  "json2"
+  "json2",
+  "backbone.localStorage"
 ], function (
   $,
   Backbone,
@@ -46,21 +47,43 @@ define([
   //   console.log("Fetched: " + str(noteModel.toJSON()));
   // });
 
+  // var NoteModel = Backbone.Model.extend({
+  //   defaults: { title: "", text: "*Add Note!*" }
+  // });
+
+  // var NotesCollection = Backbone.Collection.extend({
+  //   model: NoteModel,
+  //   url: "/notes"
+  // });
+
+  // var notesCollection = new NotesCollection();
+  // notesCollection.fetch().done(function () {
+  //   console.log("Fetched: " +
+  //               JSON.stringify(notesCollection.toJSON()));
+  // });
+
   var NoteModel = Backbone.Model.extend({
     defaults: { title: "", text: "*Add Note!*" }
   });
-
   var NotesCollection = Backbone.Collection.extend({
     model: NoteModel,
-    url: "/notes"
+    localStorage: new Backbone.LocalStorage("bb-col-demo")
   });
 
   var notesCollection = new NotesCollection();
-  notesCollection.fetch().done(function () {
-    console.log("Fetched: " +
-                JSON.stringify(notesCollection.toJSON()));
-  });
+  // CLEAR: notesCollection.localStorage._clear();
+  // FETCH: notesCollection.fetch({ reset: true });
 
+  // _.each(["Hi", "Hello", "Hola"], function (msg) {
+  //   notesCollection.create({ text: msg });
+  // });
+  notesCollection.fetch(); // Use existing models!
+
+  var theOs = notesCollection.chain()
+    .filter(function (model) {
+      return model.get("text").match(/o/);
+    }).value();
+  console.log(JSON.stringify(theOs, null, 2));
 
   // --------------------------------------------------------------------------
   // Application Bootstrap
