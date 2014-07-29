@@ -16,7 +16,8 @@ define([
   // For real application, remove this import (and the real file) and replace
   // with imports for your Backbone components needed to bootstrap the full
   // application. Likely this means a collection and router.
-  "hbs!app/templates/hello",
+  "hbs!app/templates/note",
+  "hbs!app/templates/notes",
 
   // Polyfill JSON for old browsers.
   "json2",
@@ -24,7 +25,8 @@ define([
 ], function (
   $,
   Backbone,
-  helloTmpl
+  noteTmpl,
+  notesTmpl
 ) {
   "use strict";
 
@@ -75,19 +77,24 @@ define([
   // FETCH: notesCollection.fetch({ reset: true });
 
   // _.each(["Hi", "Hello", "Hola"], function (msg) {
-  //   notesCollection.create({ text: msg });
+  //   notesCollection.create({ title: msg, text: msg });
   // });
   notesCollection.fetch(); // Use existing models!
 
-  var theOs = notesCollection.chain()
-    .filter(function (model) {
-      return model.get("text").match(/o/);
-    }).value();
-  console.log(JSON.stringify(theOs, null, 2));
+  // var theOs = notesCollection.chain()
+  //   .filter(function (model) {
+  //     return model.get("text").match(/o/);
+  //   }).value();
+  // console.log(JSON.stringify(theOs, null, 2));
 
   // --------------------------------------------------------------------------
   // Application Bootstrap
   // --------------------------------------------------------------------------
   $(function () {
+
+    // Templates
+    $("body")
+      .append(noteTmpl(notesCollection.at(0).toJSON()))
+      .append(notesTmpl(notesCollection.toJSON()));
   });
 });
