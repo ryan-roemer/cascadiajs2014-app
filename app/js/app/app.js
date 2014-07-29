@@ -30,26 +30,32 @@ define([
   // --------------------------------------------------------------------------
   // Backbone.js Components.
   // --------------------------------------------------------------------------
+  var str = JSON.stringify;
   var NoteModel = Backbone.Model.extend({
     urlRoot: "/notes", // :id
     defaults: { title: "", text: "*Add Note!*" }
   });
 
-  // Hack an `id` for fetch routing.
   var noteModel = new NoteModel({ id: 1 });
   noteModel.on("change", function () {
-    console.log("Updated: " +
-                JSON.stringify(noteModel.toJSON()));
+    console.log("Updated: " + str(noteModel.toJSON()));
   });
 
-  console.log("Defaults: " +
-              JSON.stringify(noteModel.toJSON()));
-  var jqXhr = noteModel.fetch();
-  jqXhr.done(function () {
-    console.log("Fetched: " +
-                JSON.stringify(noteModel.toJSON()));
+  console.log("Defaults: " + str(noteModel.toJSON()));
+  noteModel.fetch().done(function () {
+    console.log("Fetched: " + str(noteModel.toJSON()));
   });
 
+  // var NotesCollection = Backbone.Collection.extend({
+  //   model: NoteModel,
+  //   url: "/notes"
+  // });
+
+  // var notesCollection = new NotesCollection();
+  // notesCollection.fetch().done(function () {
+  //   console.log("Fetched: " +
+  //               JSON.stringify(notesCollection.toJSON()));
+  // });
 
 
   // --------------------------------------------------------------------------
