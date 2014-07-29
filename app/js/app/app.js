@@ -101,18 +101,33 @@ define([
   var NotesView = Backbone.View.extend({
     template: notesTmpl,
     el: "#notes .content",
+    events: {
+      "click li": "clickNote"
+    },
     initialize: function () {
      this.listenTo(this.collection, "change", this.render);
     },
     render: function () {
       this.$el.html(this.template(this.collection.toJSON()));
       return this;
+    },
+    clickNote: function (ev) {
+      var $el = $(ev.currentTarget);
+      Backbone.history.navigate($el.index().toString(), { trigger: true });
     }
   });
 
-  var $note = $("<div id='note'><h2>Note</h2><div class='content' /></div>");
+  var $note = $(
+    "<div id='note'><h2>Note</h2><div class='content' />" +
+    "<a class='all-notes'>All notes</a></div>");
   var $notes = $(
     "<div id='notes'><h2>Notes</h2><div class='content' /></div>");
+
+  // Manual event handler.
+  $note.find(".all-notes").click(function (ev) {
+    ev.preventDefault();
+    Backbone.history.navigate("", { trigger: true });
+  });
 
   var Router = Backbone.Router.extend({
     routes: {
