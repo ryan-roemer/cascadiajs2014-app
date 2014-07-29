@@ -81,10 +81,9 @@ define([
   // });
   notesCollection.fetch(); // Use existing models!
 
-  // var theOs = notesCollection.chain()
-  //   .filter(function (model) {
+  // var theOs = notesCollection.filter(function (model) {
   //     return model.get("text").match(/o/);
-  //   }).value();
+  //   });
   // console.log(JSON.stringify(theOs, null, 2));
 
   // --------------------------------------------------------------------------
